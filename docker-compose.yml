@@ -11,6 +11,15 @@ services:
       MYSQL_PASSWORD: 123456
     ports:
       - "3307:3306"
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: posts_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - "5433:5432"
   kafka:
     image: 'bitnami/kafka:latest'
     environment:
@@ -23,11 +32,12 @@ services:
   
   kafka-connect:
     image: confluentinc/cp-kafka-connect-base:latest
-    platform: linux/arm64
+    platform: linux/x86_64
     restart: always
     depends_on:
       - kafka
       - mysql
+      - postgres
     ports:
       - 8083:8083
     environment:
